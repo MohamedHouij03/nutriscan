@@ -8,7 +8,10 @@ import '../models/allergen_model.dart';
 class AllergenCard extends StatelessWidget {
   final AllergenModel allergen;
 
-  const AllergenCard({super.key, required this.allergen});
+  const AllergenCard({
+    super.key,
+    required this.allergen,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +22,11 @@ class AllergenCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.06),
+        color: color.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(
+          color: color.withValues(alpha: 0.3),
+        ),
       ),
       child: Row(
         children: [
@@ -30,11 +35,16 @@ class AllergenCard extends StatelessWidget {
             width: 44,
             height: 44,
             decoration: BoxDecoration(
-              color: color.withOpacity(0.12),
+              color: color.withValues(alpha: 0.12),
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, color: color, size: 22),
+            child: Icon(
+              icon,
+              color: color,
+              size: 22,
+            ),
           ),
+
           const SizedBox(width: 14),
 
           // Name + raw text
@@ -44,7 +54,9 @@ class AllergenCard extends StatelessWidget {
               children: [
                 Text(
                   AppUtils.capitalize(allergen.name),
-                  style: AppTextStyles.titleMedium.copyWith(color: color),
+                  style: AppTextStyles.titleMedium.copyWith(
+                    color: color,
+                  ),
                 ),
                 if (allergen.rawText.isNotEmpty)
                   Text(
@@ -56,7 +68,10 @@ class AllergenCard extends StatelessWidget {
           ),
 
           // Severity badge
-          _SeverityBadge(severity: allergen.severity, color: color),
+          _SeverityBadge(
+            severity: allergen.severity,
+            color: color,
+          ),
         ],
       ),
     );
@@ -67,21 +82,33 @@ class _SeverityBadge extends StatelessWidget {
   final String severity;
   final Color color;
 
-  const _SeverityBadge({required this.severity, required this.color});
+  const _SeverityBadge({
+    required this.severity,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 10,
+        vertical: 5,
+      ),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.12),
+        color: color.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color.withOpacity(0.4)),
+        border: Border.all(
+          color: color.withValues(alpha: 0.4),
+        ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.warning_amber_rounded, size: 12, color: color),
+          Icon(
+            Icons.warning_amber_rounded,
+            size: 12,
+            color: color,
+          ),
           const SizedBox(width: 4),
           Text(
             AppUtils.capitalize(severity),

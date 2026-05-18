@@ -23,11 +23,11 @@ class ResultScreen extends ConsumerWidget {
       backgroundColor: AppColors.background,
       body: CustomScrollView(
         slivers: [
-          // ── Sliver App Bar ───────────────────────────────────────────────
           SliverAppBar(
             pinned: true,
             expandedHeight: 120,
-            backgroundColor: result.hasIssues ? AppColors.danger : AppColors.success,
+            backgroundColor:
+                result.hasIssues ? AppColors.danger : AppColors.success,
             leading: IconButton(
               icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
               onPressed: () => context.pop(),
@@ -78,8 +78,6 @@ class ResultScreen extends ConsumerWidget {
               ),
             ),
           ),
-
-          // ── Summary Banner ───────────────────────────────────────────────
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(16),
@@ -89,8 +87,6 @@ class ResultScreen extends ConsumerWidget {
                   .slideY(begin: 0.2, end: 0),
             ),
           ),
-
-          // ── Allergens Section ────────────────────────────────────────────
           if (result.allergens.isNotEmpty) ...[
             SliverPadding(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
@@ -116,8 +112,6 @@ class ResultScreen extends ConsumerWidget {
               ),
             ),
           ],
-
-          // ── Additives Section ────────────────────────────────────────────
           if (result.additives.isNotEmpty) ...[
             SliverPadding(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
@@ -143,17 +137,14 @@ class ResultScreen extends ConsumerWidget {
               ),
             ),
           ],
-
-          // ── Clean bill ────────────────────────────────────────────────────
           if (!result.hasIssues)
             SliverToBoxAdapter(
               child: _CleanResult()
                   .animate(delay: 200.ms)
                   .fadeIn(duration: 600.ms)
-                  .scale(begin: const Offset(0.9, 0.9), end: const Offset(1, 1)),
+                  .scale(
+                      begin: const Offset(0.9, 0.9), end: const Offset(1, 1)),
             ),
-
-          // ── Extracted Text ────────────────────────────────────────────────
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
             sliver: SliverToBoxAdapter(
@@ -162,8 +153,6 @@ class ResultScreen extends ConsumerWidget {
                   .fadeIn(duration: 400.ms),
             ),
           ),
-
-          // ── Confidence ────────────────────────────────────────────────────
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
             sliver: SliverToBoxAdapter(
@@ -172,8 +161,6 @@ class ResultScreen extends ConsumerWidget {
                   .fadeIn(duration: 400.ms),
             ),
           ),
-
-          // ── Actions ───────────────────────────────────────────────────────
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 48),
             sliver: SliverToBoxAdapter(
@@ -228,7 +215,7 @@ class _SectionHeader extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
           decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
+            color: color.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Text(
@@ -251,7 +238,7 @@ class _CleanResult extends StatelessWidget {
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
-        color: AppColors.successLight.withOpacity(0.2),
+        color: AppColors.successLight.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: AppColors.success, width: 1.5),
       ),
@@ -307,10 +294,14 @@ class _ExtractedTextCardState extends State<_ExtractedTextCard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ListTile(
-            leading: const Icon(Icons.text_snippet_outlined, color: AppColors.info),
-            title: const Text('Extracted Text', style: AppTextStyles.titleLarge),
+            leading:
+                const Icon(Icons.text_snippet_outlined, color: AppColors.info),
+            title:
+                const Text('Extracted Text', style: AppTextStyles.titleLarge),
             trailing: IconButton(
-              icon: Icon(_expanded ? Icons.expand_less : Icons.expand_more),
+              icon: Icon(
+                _expanded ? Icons.expand_less : Icons.expand_more,
+              ),
               onPressed: () => setState(() => _expanded = !_expanded),
             ),
           ),

@@ -4,13 +4,13 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:fl_chart/fl_chart.dart';
+
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/utils/app_utils.dart';
 import '../../../../features/auth/presentation/providers/auth_notifier.dart';
 import '../../../../features/history/data/history_repository.dart';
-import '../../../../models/scan_result_model.dart';
 import '../../../../widgets/scan_history_tile.dart';
 import '../../../../widgets/stat_card.dart';
 
@@ -66,17 +66,25 @@ class HomeScreen extends ConsumerWidget {
                         ],
                       ),
                     ),
+
                     // Profile / sign out
                     IconButton(
                       icon: const CircleAvatar(
                         backgroundColor: Colors.white24,
-                        child: Icon(Icons.person_outline, color: Colors.white),
+                        child: Icon(
+                          Icons.person_outline,
+                          color: Colors.white,
+                        ),
                       ),
                       onPressed: () async {
                         final confirm = await _confirmSignOut(context);
+
                         if (confirm == true) {
                           ref.read(authNotifierProvider.notifier).signOut();
-                          if (context.mounted) context.go(AppRoutes.login);
+
+                          if (context.mounted) {
+                            context.go(AppRoutes.login);
+                          }
                         }
                       },
                     ),
@@ -110,7 +118,10 @@ class HomeScreen extends ConsumerWidget {
                         value: '${stats.totalAllergens}',
                         icon: Icons.warning_amber_outlined,
                         color: AppColors.allergenHigh,
-                      ).animate(delay: 100.ms).fadeIn(duration: 500.ms).slideY(begin: 0.3),
+                      )
+                          .animate(delay: 100.ms)
+                          .fadeIn(duration: 500.ms)
+                          .slideY(begin: 0.3),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
@@ -119,7 +130,10 @@ class HomeScreen extends ConsumerWidget {
                         value: '${stats.totalAdditives}',
                         icon: Icons.science_outlined,
                         color: AppColors.warning,
-                      ).animate(delay: 200.ms).fadeIn(duration: 500.ms).slideY(begin: 0.3),
+                      )
+                          .animate(delay: 200.ms)
+                          .fadeIn(duration: 500.ms)
+                          .slideY(begin: 0.3),
                     ),
                   ],
                 ),
@@ -161,7 +175,10 @@ class HomeScreen extends ConsumerWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Recent Scans', style: AppTextStyles.headlineMedium),
+                  Text(
+                    'Recent Scans',
+                    style: AppTextStyles.headlineMedium,
+                  ),
                 ],
               ),
             ),
@@ -177,12 +194,21 @@ class HomeScreen extends ConsumerWidget {
               ),
             ),
             error: (err, _) => SliverToBoxAdapter(
-              child: _ErrorWidget(message: err.toString()),
+              child: _ErrorWidget(
+                message: err.toString(),
+              ),
             ),
             data: (scans) => scans.isEmpty
-                ? const SliverToBoxAdapter(child: _EmptyHistory())
+                ? const SliverToBoxAdapter(
+                    child: _EmptyHistory(),
+                  )
                 : SliverPadding(
-                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 100),
+                    padding: const EdgeInsets.fromLTRB(
+                      16,
+                      0,
+                      16,
+                      100,
+                    ),
                     sliver: SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (ctx, i) => ScanHistoryTile(
@@ -192,9 +218,16 @@ class HomeScreen extends ConsumerWidget {
                             extra: scans[i],
                           ),
                         )
-                            .animate(delay: (50 * i).ms)
-                            .fadeIn(duration: 400.ms)
-                            .slideX(begin: 0.1, end: 0),
+                            .animate(
+                              delay: (50 * i).ms,
+                            )
+                            .fadeIn(
+                              duration: 400.ms,
+                            )
+                            .slideX(
+                              begin: 0.1,
+                              end: 0,
+                            ),
                         childCount: scans.length,
                       ),
                     ),
@@ -203,17 +236,20 @@ class HomeScreen extends ConsumerWidget {
         ],
       ),
 
-      // ── FAB: Scan ─────────────────────────────────────────────────────────
+      // ── FAB: Scan ───────────────────────────────────────────────────────
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => context.push(AppRoutes.scan),
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
-        icon: const Icon(Icons.document_scanner_outlined),
+        icon: const Icon(
+          Icons.document_scanner_outlined,
+        ),
         label: const Text('New Scan'),
         elevation: 4,
-      )
-          .animate(delay: 400.ms)
-          .scale(begin: const Offset(0, 0), end: const Offset(1, 1)),
+      ).animate(delay: 400.ms).scale(
+            begin: const Offset(0, 0),
+            end: const Offset(1, 1),
+          ),
     );
   }
 
@@ -222,7 +258,9 @@ class HomeScreen extends ConsumerWidget {
       context: context,
       builder: (ctx) => AlertDialog(
         title: const Text('Sign Out'),
-        content: const Text('Are you sure you want to sign out?'),
+        content: const Text(
+          'Are you sure you want to sign out?',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
@@ -250,14 +288,19 @@ class _ScanButton extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           gradient: const LinearGradient(
-            colors: [AppColors.primary, AppColors.primaryLight],
+            colors: [
+              AppColors.primary,
+              AppColors.primaryLight,
+            ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: AppColors.primary.withOpacity(0.35),
+              color: AppColors.primary.withValues(
+                alpha: 0.35,
+              ),
               blurRadius: 16,
               offset: const Offset(0, 6),
             ),
@@ -269,7 +312,7 @@ class _ScanButton extends StatelessWidget {
               width: 56,
               height: 56,
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
+                color: Colors.white.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(14),
               ),
               child: const Icon(
@@ -295,14 +338,20 @@ class _ScanButton extends StatelessWidget {
                   Text(
                     'Take a photo or upload from gallery',
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.8),
+                      color: Colors.white.withValues(
+                        alpha: 0.8,
+                      ),
                       fontSize: 12,
                     ),
                   ),
                 ],
               ),
             ),
-            const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 16),
+            const Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.white,
+              size: 16,
+            ),
           ],
         ),
       ),
@@ -312,12 +361,16 @@ class _ScanButton extends StatelessWidget {
 
 class _AllergenChart extends StatelessWidget {
   final ScanStats stats;
-  const _AllergenChart({required this.stats});
+
+  const _AllergenChart({
+    required this.stats,
+  });
 
   @override
   Widget build(BuildContext context) {
     final sorted = stats.allergenCounts.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
+
     final top5 = sorted.take(5).toList();
 
     return Card(
@@ -326,7 +379,10 @@ class _AllergenChart extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Top Allergens Detected', style: AppTextStyles.titleLarge),
+            const Text(
+              'Top Allergens Detected',
+              style: AppTextStyles.titleLarge,
+            ),
             const SizedBox(height: 16),
             SizedBox(
               height: 180,
@@ -334,31 +390,45 @@ class _AllergenChart extends StatelessWidget {
                 BarChartData(
                   alignment: BarChartAlignment.spaceAround,
                   maxY: (top5.isEmpty ? 1 : top5.first.value).toDouble() + 1,
-                  barGroups: List.generate(top5.length, (i) {
-                    return BarChartGroupData(
-                      x: i,
-                      barRods: [
-                        BarChartRodData(
-                          toY: top5[i].value.toDouble(),
-                          color: AppColors.primary,
-                          width: 20,
-                          borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(6),
+                  barGroups: List.generate(
+                    top5.length,
+                    (i) {
+                      return BarChartGroupData(
+                        x: i,
+                        barRods: [
+                          BarChartRodData(
+                            toY: top5[i].value.toDouble(),
+                            color: AppColors.primary,
+                            width: 20,
+                            borderRadius: const BorderRadius.vertical(
+                              top: Radius.circular(6),
+                            ),
                           ),
-                        ),
-                      ],
-                    );
-                  }),
+                        ],
+                      );
+                    },
+                  ),
                   titlesData: FlTitlesData(
                     bottomTitles: AxisTitles(
                       sideTitles: SideTitles(
                         showTitles: true,
-                        getTitlesWidget: (value, meta) {
+                        getTitlesWidget: (
+                          value,
+                          meta,
+                        ) {
                           final i = value.toInt();
-                          if (i >= top5.length) return const SizedBox.shrink();
+
+                          if (i >= top5.length) {
+                            return const SizedBox.shrink();
+                          }
+
                           return Text(
-                            AppUtils.capitalize(top5[i].key.split('/').first),
-                            style: const TextStyle(fontSize: 10),
+                            AppUtils.capitalize(
+                              top5[i].key.split('/').first,
+                            ),
+                            style: const TextStyle(
+                              fontSize: 10,
+                            ),
                           );
                         },
                       ),
@@ -369,19 +439,29 @@ class _AllergenChart extends StatelessWidget {
                         reservedSize: 28,
                         getTitlesWidget: (value, meta) => Text(
                           value.toInt().toString(),
-                          style: const TextStyle(fontSize: 10),
+                          style: const TextStyle(
+                            fontSize: 10,
+                          ),
                         ),
                       ),
                     ),
                     topTitles: const AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
+                      sideTitles: SideTitles(
+                        showTitles: false,
+                      ),
                     ),
                     rightTitles: const AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
+                      sideTitles: SideTitles(
+                        showTitles: false,
+                      ),
                     ),
                   ),
-                  borderData: FlBorderData(show: false),
-                  gridData: const FlGridData(show: false),
+                  borderData: FlBorderData(
+                    show: false,
+                  ),
+                  gridData: const FlGridData(
+                    show: false,
+                  ),
                 ),
               ),
             ),
@@ -401,11 +481,17 @@ class _EmptyHistory extends StatelessWidget {
       padding: const EdgeInsets.all(40),
       child: Column(
         children: [
-          const Icon(Icons.history, size: 64, color: AppColors.textHint),
+          const Icon(
+            Icons.history,
+            size: 64,
+            color: AppColors.textHint,
+          ),
           const SizedBox(height: 16),
           Text(
             'No scans yet',
-            style: AppTextStyles.titleLarge.copyWith(color: AppColors.textSecondary),
+            style: AppTextStyles.titleLarge.copyWith(
+              color: AppColors.textSecondary,
+            ),
           ),
           const SizedBox(height: 8),
           const Text(
@@ -421,7 +507,10 @@ class _EmptyHistory extends StatelessWidget {
 
 class _ErrorWidget extends StatelessWidget {
   final String message;
-  const _ErrorWidget({required this.message});
+
+  const _ErrorWidget({
+    required this.message,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -429,9 +518,17 @@ class _ErrorWidget extends StatelessWidget {
       padding: const EdgeInsets.all(32),
       child: Column(
         children: [
-          const Icon(Icons.error_outline, color: AppColors.danger, size: 48),
+          const Icon(
+            Icons.error_outline,
+            color: AppColors.danger,
+            size: 48,
+          ),
           const SizedBox(height: 8),
-          Text(message, style: AppTextStyles.bodyMedium, textAlign: TextAlign.center),
+          Text(
+            message,
+            style: AppTextStyles.bodyMedium,
+            textAlign: TextAlign.center,
+          ),
         ],
       ),
     );
@@ -449,10 +546,14 @@ class _StatsShimmer extends StatelessWidget {
         (_) => Expanded(
           child: Container(
             height: 80,
-            margin: const EdgeInsets.symmetric(horizontal: 4),
+            margin: const EdgeInsets.symmetric(
+              horizontal: 4,
+            ),
             decoration: BoxDecoration(
               color: AppColors.divider,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(
+                12,
+              ),
             ),
           ),
         ),

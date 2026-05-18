@@ -23,7 +23,6 @@ dependencies:
   firebase_storage: ^11.7.0
 
   # OCR
-  google_mlkit_text_recognition: ^0.15.1
 
   # Camera & Image
   camera: ^0.10.5+9

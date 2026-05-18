@@ -43,7 +43,7 @@ class ScanHistoryTile extends StatelessWidget {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: severityColor.withOpacity(0.12),
+                  color: severityColor.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
@@ -62,7 +62,9 @@ class ScanHistoryTile extends StatelessWidget {
                     // Text preview
                     Text(
                       AppUtils.truncate(
-                          scan.extractedText.replaceAll('\n', ' '), 50),
+                        scan.extractedText.replaceAll('\n', ' '),
+                        50,
+                      ),
                       style: AppTextStyles.titleMedium,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -88,7 +90,10 @@ class ScanHistoryTile extends StatelessWidget {
                             color: AppColors.warning,
                           ),
                         if (!scan.hasIssues)
-                          const _Tag(label: 'Safe', color: AppColors.success),
+                          const _Tag(
+                            label: 'Safe',
+                            color: AppColors.success,
+                          ),
                       ],
                     ),
 
@@ -104,13 +109,19 @@ class ScanHistoryTile extends StatelessWidget {
               // Delete or arrow
               if (showDeleteButton && onDelete != null)
                 IconButton(
-                  icon: const Icon(Icons.delete_outline,
-                      color: AppColors.textHint, size: 20),
+                  icon: const Icon(
+                    Icons.delete_outline,
+                    color: AppColors.textHint,
+                    size: 20,
+                  ),
                   onPressed: onDelete,
                 )
               else
-                const Icon(Icons.chevron_right,
-                    color: AppColors.textHint, size: 20),
+                const Icon(
+                  Icons.chevron_right,
+                  color: AppColors.textHint,
+                  size: 20,
+                ),
             ],
           ),
         ),
@@ -156,7 +167,7 @@ class _Tag extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(6),
       ),
       child: Text(

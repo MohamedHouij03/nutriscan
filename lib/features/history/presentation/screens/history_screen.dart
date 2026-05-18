@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_text_styles.dart';
@@ -123,15 +124,18 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
               ('safe', 'Safe Scans', Icons.check_circle_outline),
             ].map(
               (item) => ListTile(
-                leading: Icon(item.$3,
-                    color: _filter == item.$1
-                        ? AppColors.primary
-                        : AppColors.textSecondary),
+                leading: Icon(
+                  item.$3,
+                  color: _filter == item.$1
+                      ? AppColors.primary
+                      : AppColors.textSecondary,
+                ),
                 title: Text(item.$2),
                 selected: _filter == item.$1,
-                selectedTileColor: AppColors.primary.withOpacity(0.08),
+                selectedTileColor: AppColors.primary.withValues(alpha: 0.08),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 onTap: () {
                   setState(() => _filter = item.$1);
                   Navigator.pop(context);
@@ -145,7 +149,8 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
     );
   }
 
-  Future<void> _confirmDelete(BuildContext context, ScanResultModel scan) async {
+  Future<void> _confirmDelete(
+      BuildContext context, ScanResultModel scan) async {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -158,7 +163,9 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(ctx, true),
-            style: ElevatedButton.styleFrom(backgroundColor: AppColors.danger),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.danger,
+            ),
             child: const Text('Delete'),
           ),
         ],
@@ -166,13 +173,22 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
     );
 
     if (confirm == true) {
-      final result = await ref
-          .read(historyRepositoryProvider)
-          .deleteScan(scan.id);
+      final result =
+          await ref.read(historyRepositoryProvider).deleteScan(scan.id);
+
       if (!mounted) return;
+
       result.fold(
-        (f) => AppUtils.showSnackBar(context, message: f.message, isError: true),
-        (_) => AppUtils.showSnackBar(context, message: 'Scan deleted', isSuccess: true),
+        (f) => AppUtils.showSnackBar(
+          context,
+          message: f.message,
+          isError: true,
+        ),
+        (_) => AppUtils.showSnackBar(
+          context,
+          message: 'Scan deleted',
+          isSuccess: true,
+        ),
       );
     }
   }
@@ -206,13 +222,14 @@ class _FilterBar extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         children: filters.map((f) {
           final selected = current == f.$1;
+
           return Padding(
             padding: const EdgeInsets.only(right: 8),
             child: FilterChip(
               label: Text('${f.$2} (${counts[f.$1] ?? 0})'),
               selected: selected,
               onSelected: (_) => onChanged(f.$1),
-              selectedColor: AppColors.primary.withOpacity(0.15),
+              selectedColor: AppColors.primary.withValues(alpha: 0.15),
               checkmarkColor: AppColors.primary,
               labelStyle: TextStyle(
                 color: selected ? AppColors.primary : AppColors.textSecondary,
@@ -237,12 +254,16 @@ class _EmptyState extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.inbox_outlined, size: 72, color: AppColors.textHint),
+          const Icon(
+            Icons.inbox_outlined,
+            size: 72,
+            color: AppColors.textHint,
+          ),
           const SizedBox(height: 16),
           Text(
             filter == 'all' ? 'No scans yet' : 'No matching scans',
-            style: AppTextStyles.headlineMedium.copyWith(
-                color: AppColors.textSecondary),
+            style: AppTextStyles.headlineMedium
+                .copyWith(color: AppColors.textSecondary),
           ),
           const SizedBox(height: 8),
           Text(
@@ -271,10 +292,16 @@ class _ErrorState extends StatelessWidget {
           children: [
             const Icon(Icons.error_outline, color: AppColors.danger, size: 56),
             const SizedBox(height: 16),
-            const Text('Failed to load history', style: AppTextStyles.headlineMedium),
+            const Text(
+              'Failed to load history',
+              style: AppTextStyles.headlineMedium,
+            ),
             const SizedBox(height: 8),
-            Text(message,
-                style: AppTextStyles.bodySmall, textAlign: TextAlign.center),
+            Text(
+              message,
+              style: AppTextStyles.bodySmall,
+              textAlign: TextAlign.center,
+            ),
           ],
         ),
       ),

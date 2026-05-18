@@ -46,7 +46,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     } else {
       final failure = ref.read(authNotifierProvider).failure;
       if (failure != null) {
-        AppUtils.showSnackBar(context, message: failure.message, isError: true);
+        AppUtils.showSnackBar(
+          context,
+          message: failure.message,
+          isError: true,
+        );
       }
     }
   }
@@ -69,16 +73,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const SizedBox(height: 60),
-
-                  // ── Logo & Title ──────────────────────────────────────────
                   _buildHeader()
                       .animate()
                       .fadeIn(duration: 600.ms)
                       .slideY(begin: -0.2, end: 0),
-
                   const SizedBox(height: 48),
-
-                  // ── Form ──────────────────────────────────────────────────
                   AppTextField(
                     controller: _emailController,
                     label: 'Email',
@@ -94,9 +93,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       .animate(delay: 100.ms)
                       .fadeIn(duration: 500.ms)
                       .slideX(begin: -0.1, end: 0),
-
                   const SizedBox(height: 16),
-
                   AppTextField(
                     controller: _passwordController,
                     label: 'Password',
@@ -110,11 +107,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             : Icons.visibility_off_outlined,
                         color: AppColors.textSecondary,
                       ),
-                      onPressed: () =>
-                          setState(() => _obscurePassword = !_obscurePassword),
+                      onPressed: () => setState(
+                        () => _obscurePassword = !_obscurePassword,
+                      ),
                     ),
                     validator: (v) {
-                      if (v == null || v.isEmpty) return 'Password is required';
+                      if (v == null || v.isEmpty) {
+                        return 'Password is required';
+                      }
                       if (v.length < 6) return 'At least 6 characters';
                       return null;
                     },
@@ -122,10 +122,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       .animate(delay: 150.ms)
                       .fadeIn(duration: 500.ms)
                       .slideX(begin: -0.1, end: 0),
-
                   const SizedBox(height: 12),
-
-                  // Forgot password
                   Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
@@ -138,10 +135,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 24),
-
-                  // ── Sign In Button ─────────────────────────────────────────
                   AppButton(
                     label: 'Sign In',
                     onPressed: authState.isLoading ? null : _handleSignIn,
@@ -151,10 +145,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       .animate(delay: 200.ms)
                       .fadeIn(duration: 500.ms)
                       .slideY(begin: 0.2, end: 0),
-
                   const SizedBox(height: 24),
-
-                  // ── Divider ───────────────────────────────────────────────
                   const Row(
                     children: [
                       Expanded(child: Divider()),
@@ -168,17 +159,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       Expanded(child: Divider()),
                     ],
                   ),
-
                   const SizedBox(height: 16),
-
-                  // ── Sign Up Link ──────────────────────────────────────────
                   OutlinedButton(
                     onPressed: () => context.push(AppRoutes.signup),
                     child: const Text('Create Account'),
-                  )
-                      .animate(delay: 250.ms)
-                      .fadeIn(duration: 500.ms),
-
+                  ).animate(delay: 250.ms).fadeIn(duration: 500.ms),
                   const SizedBox(height: 32),
                 ],
               ),
@@ -192,7 +177,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget _buildHeader() {
     return Column(
       children: [
-        // App icon/logo
         Container(
           width: 80,
           height: 80,
@@ -201,7 +185,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: AppColors.primary.withOpacity(0.3),
+                color: AppColors.primary.withValues(alpha: 0.3),
                 blurRadius: 20,
                 offset: const Offset(0, 8),
               ),
@@ -231,6 +215,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   void _showForgotPasswordDialog(BuildContext context) {
     final emailCtrl = TextEditingController();
+
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -258,10 +243,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           ElevatedButton(
             onPressed: () async {
               Navigator.pop(ctx);
+
               final success = await ref
                   .read(authNotifierProvider.notifier)
                   .sendPasswordReset(emailCtrl.text.trim());
-              if (!mounted) return;
+
+              if (!context.mounted) return;
+
               AppUtils.showSnackBar(
                 context,
                 message: success

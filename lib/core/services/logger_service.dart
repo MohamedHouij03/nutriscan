@@ -1,4 +1,3 @@
-// lib/core/services/logger_service.dart
 import 'package:logger/logger.dart';
 
 /// Centralized logger for the application.
@@ -13,7 +12,9 @@ class AppLogger {
       lineLength: 80,
       colors: true,
       printEmojis: true,
-      printTime: true,
+
+      // ✅ FIX: replace deprecated printTime
+      dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
     ),
   );
 

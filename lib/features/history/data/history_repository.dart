@@ -7,7 +7,6 @@ import '../../../core/errors/failures.dart';
 import '../../../core/services/logger_service.dart';
 import '../../../models/scan_result_model.dart';
 import '../../auth/data/auth_remote_data_source.dart';
-import '../../auth/domain/auth_repository.dart';
 
 /// Repository for fetching and deleting scan history from Firestore.
 class HistoryRepository {
